@@ -1,4 +1,4 @@
-baseurl: https://example.com/
+baseURL: "https://barasite.vercel.app/"
 languageCode: en-us
 theme: hugo-theme-stack
 title: bar's site
