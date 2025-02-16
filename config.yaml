@@ -56,7 +56,7 @@ params:
         avatar:
             enabled: true
             local: true
-            src: static/img/avatar.png
+            src: img/avatar.png
 
     article:
         math: false
@@ -177,7 +177,7 @@ params:
         toggle: true
 
         # Available values: auto, light, dark
-        default: light
+        default: dark
 
     imageProcessing:
         cover:
