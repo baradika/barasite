@@ -1,24 +1,34 @@
 ---
 title: About
 description: an ethical hacker and developer passionate about technology exploration
-date: '2025-02-15'
 aliases:
   - about-me
   - contact
 license: CC BY-NC-ND
-lastmod: '2025-02-15'
+readingTime: false
 menu:
     main:
         weight: -90
         params:
             icon: user
 ---
-<h2><strong>About Me</strong></h2>
 
-<p>Yo! I’m <strong>Baradika</strong> – some say I’m an <strong>ethical hacker</strong> (I just break stuff and hope it’s legal), a <strong>CTF enjoyer</strong>, and a part-time <strong>keyboard warrior</strong>. I mess around with <em>cybersecurity, pentesting, coding weird tools</em>, and sometimes I actually build useful apps (rare, but it happens).</p>
+<h2><strong>Yo! I’m Baradika</strong></h2>
 
-<p>Tools of the trade? <strong>Kali Linux, Python (for hacking stuff), Web Dev</strong>, and whatever else Google tells me to use when things break.</p>
+<p>Some say I’m a <strong>hacker</strong> (I just break stuff and hope it’s legal), a <strong>CTF enthusiast</strong>, and a part-time <strong>professional procrastinator</strong>. I mess around with <em>cybersecurity, pentesting, coding weird tools</em>, and sometimes I actually build useful apps (rare, but it happens).</p>
 
-<p>Routine? Honestly, kinda basic: <em>wake up → eat → code (or stare at the screen) → gym (to convince myself I’m productive) → sleep → repeat.</em></p>
+<h3><strong>Routine?</strong></h3>
+<p>Honestly, kinda basic: <em>wake up → eat → code (or playing Roblox) → gym (to convince myself I’m productive) → sleep → repeat.</em></p>
 
-<p>Life motto? <em>If it compiles, we vibe. If it doesn’t, we cry (but still vibe).</em></p>
+<h3><strong>What I Like?</strong></h3>
+<p>I’m into a few categories:</p>
+<ul>
+  <li><strong>Digital Forensic</strong></li>
+  <li><strong>Web Exploitation</strong></li>
+  <li><strong>Reverse Engineering</strong></li>
+  <li><strong>Cryptography</strong> (but need GPT as my math tutor lol)</li>
+</ul>
+
+<h3><strong>Life Motto?</strong></h3>
+<p><em>We don't live in the past.</em></p>
+
