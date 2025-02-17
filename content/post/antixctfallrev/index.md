@@ -316,7 +316,7 @@ print(result)
 but its still incorrect, but when i add underscore between sentences, it work
 ![flag](mencariPWflag.png)
 
-flag: **flag{ini_adalah_password_hehe}**
+```flag: flag{ini_adalah_password_hehe}```
 ## **Password Checker**
 ![desc](passwordcheckerdesc.png)
 we got a file, and the format is exe, so i just run it
@@ -584,7 +584,7 @@ Input Password : Jus7_4n_34zzy_p34zzy_l3m0nn_squ1zzy!!
 [!] Access Granted!
 Here is your flag: flag{Jus7_4n_34zzy_p34zzy_l3m0nn_squ1zzy!!}
 ```
-flag: **flag{Jus7_4n_34zzy_p34zzy_l3m0nn_squ1zzy!!}**
+```flag: flag{Jus7_4n_34zzy_p34zzy_l3m0nn_squ1zzy!!}```
 ## Password Checker v2
 ![desc](passwordcheckerv2desc.png)
 
@@ -727,7 +727,7 @@ the output (flag)
 ❯ python3 r.py
 y0_d4wg_unc0mply3_t0_dec0mpyl3_c0mpyl3d_pyth0n3_c0d3
 ```
-flag: **flag{y0_d4wg_unc0mply3_t0_dec0mpyl3_c0mpyl3d_pyth0n3_c0d3}**
+```flag: flag{y0_d4wg_unc0mply3_t0_dec0mpyl3_c0mpyl3d_pyth0n3_c0d3}```
 
 ## Flag Vault
 ![desc](flagvaultdesc.png)
@@ -949,6 +949,6 @@ result:
 [Offset 4] Result: Welcome back, exploiter
 flag{w3ll_n0w_you_know_h0w_to_defeat_srand_C_in_python_414243_pain}
 ```
-flag: **flag{w3ll_n0w_you_know_h0w_to_defeat_srand_C_in_python_414243_pain}**
+```flag: flag{w3ll_n0w_you_know_h0w_to_defeat_srand_C_in_python_414243_pain}```
 
 thats it about my Reverse Engineering CTF Walktrough on Antix CTF, im still learning tho, hope this is useful ❤️❤️❤️
