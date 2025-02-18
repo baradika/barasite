@@ -320,7 +320,8 @@ but its still incorrect, but when i add underscore between sentences, it work
 ```flag: flag{ini_adalah_password_hehe}```
 ## **Password Checker**
 ![desc](passwordcheckerdesc.png)
-we got a file, and the format is exe, so i just run it
+
+we got a file, and the format is exe,so i just run it
 ```bash
 ❯ ./chall
 =========================

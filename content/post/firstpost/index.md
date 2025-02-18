@@ -1,17 +1,9 @@
 ---
-title: "first post in my blog"
+title: "First Post!"
 date: "2025-02-15"
-description: "tes ombak woilah"
+description: "A stupid story about this blog launch"
 categories: [
-    "CTF",
-    "Web Exploitation",
-    "Reverse Engineering",
-    "Digital Forensic"
+    "Blog"
 ]
-tags : [
-    "Individual",
-    "TCP1P"
-]
-image : "rrrrrrrrr.jpg"
 ---
-halooo there!! welcome to my blog, ill post something about ctf walktrough, blockchain, machine learning things and whatever i like to (also tintin) , so stay tune!! dan juga terimaksihh sudah mampir di useless blog ini wkwkwkwk, hope i can share smth useful for y guys!!
+## Recent things first…
