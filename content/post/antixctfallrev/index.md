@@ -1,13 +1,13 @@
 ---
-title: "AntixCTF All Reverse Engineering"
+title: "AntixCTF"
 date: "2025-02-17"
-description: "Antix CTF All Reverse Engineering Walktrough "
+description: "Reverse Engineering Walktrough "
 categories: [
     "CTF",
     "Reverse Engineering"
 ]
 tags : [
-    "Individual",
+    "Write-Up",
     "AntixCTF"
 ]
 ---
