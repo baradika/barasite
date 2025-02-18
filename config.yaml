@@ -18,7 +18,7 @@ languages:
         weight: 1
         params:
             sidebar:
-                subtitle: cybersec enthusiast
+                subtitle: probably miss u
 
 services:
     # Change it to your Disqus shortname before using
