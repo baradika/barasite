@@ -3,13 +3,11 @@ title: "BroncoCTF 2025"
 date: "2025-02-18"
 description: "Web Exploitation, Cryptography, and Forensic Walktrough"
 categories: [
-    "CTF",
-    "Cryptography",
-    "Web Exploitation",
-    "Forensic"
+    "Write-Up"
 ]
 tags : [
-    "BroncoCTF"
+    "International",
+    "TCP1P"
 ]
 ---
 ## Bronco CTF 2025

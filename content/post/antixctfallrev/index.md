@@ -3,12 +3,11 @@ title: "AntixCTF"
 date: "2025-02-17"
 description: "Reverse Engineering Walktrough "
 categories: [
-    "CTF",
-    "Reverse Engineering"
+    "Write-Up"
 ]
 tags : [
-    "Write-Up",
-    "AntixCTF"
+    "National",
+    "Individual"
 ]
 ---
 Hi everyone! today i will share Reversing CTF Walktrough in Antix CTF Challenges, i solved it all btw, i'll introduce first about "what is Antix CTF?"

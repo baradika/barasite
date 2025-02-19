@@ -18,7 +18,7 @@ languages:
         weight: 1
         params:
             sidebar:
-                subtitle: probably miss u
+                subtitle: Don't get stuck in the past -- wear yourself out.
 
 services:
     # Change it to your Disqus shortname before using
