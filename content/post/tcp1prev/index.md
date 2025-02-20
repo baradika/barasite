@@ -571,7 +571,7 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
 })
 ```
-based on the source, we got path traversal fuln by endpoint ``/api/files:filename:``
+based on the source, we got path traversal vuln by endpoint ``/api/files:filename:``
 ```ts
 app.get('/api/files/:filename', (req, res) => {
     let { filename } = req.params
@@ -660,7 +660,7 @@ Flag: `TCP1P{m4st3r1ng_cr4ck1ng_w1th_r0cky0u!!!}`
 #### kuli-ah forensik
 ##### Author: fire
 ##### Desc: I just created secret message in image file but i want to make it secure so i transform it to audio file. But i think it's not secure enough so i archive it with password. I encrypt it with very strong password. I'am sure no one can crack it because my password is random 15 digit number in base 3. It's very very secure right? ... right??. Then i wrap my file within an image so no one can realize. flag = TCF2024{<my secret message>}
-we got a image, as  you can see in the desc, it says the image i have `strong` pass, the pass is 15 random digit number in base 3, but you know... its not secure as u thought, we can brute force it, but before brute force it, we need to make the wordlist
+we got an image, as you can see in the desc, it says the imagebhave `strong` pass, the pass is 15 random digit number in base 3, but you know... its not secure as u thought, we can brute force it, but before brute force it, we need to make the wordlist
 ```bash
 crunch 15 15 012 -o wordlist.txt
 ```
