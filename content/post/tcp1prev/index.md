@@ -669,7 +669,9 @@ we got the wordlist, and also i got zip after foremost'ed the img, maybe we need
 we got the pass, after unlock the zip, i got Robot36.wav, and yea its audio steganography, we can use sstv decoder to decode the audio and set the output as image
 ![](kuliahsstv.png)
 open the image
+
 ![](kuliahflag.png)
+
 Flag: `TCF2024{w0w_congrats_you_win}`
 
 #### pemanasan
