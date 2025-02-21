@@ -855,3 +855,62 @@ when i played the audio, its only weird sound, then i decide to check it with `s
 
 ![](audioimageflag.png)
 Flag: `TCP1P{4nn0y1ng_f0r3ns1cs_1m4g3_4nd_4ud10!!!}`
+
+## Blockchain
+### Transact
+##### Author: dimas
+##### Desc: My first blockchain challenge (T-T) Connection: http://playground.tcp1p.team:5301/
+we got a source code of solidity
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+contract Setup {
+    bool private solved;
+
+    constructor() payable {
+    }
+    function solve() public {
+        solved = true;
+    }
+
+    function isSolved() external view returns (bool) {
+        return solved;
+    }
+}
+```
+so we just need to call solve functions to make solved functions to true
+![](transactsolp.png)
+
+Flag: `TCP1P{yay_you_just_make_a_transaction_on_blockchain_smartcontract}`
+
+### FFF 
+##### Author: Kiinzu
+##### Desc: I do think basic knowledge is important. Let's go back to basic shall we?
+i got the source of solidity
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.20;
+
+contract Setup {
+    bool private solved;
+    constructor() payable {
+        solved = false;
+    }
+
+    fallback() external payable{
+        solved = true;
+    }
+
+    receive() external payable{
+        solved = false;
+    }
+
+    function isSolved() external view returns (bool) {
+        return solved;
+    }
+}
+```
+based on solidity source, we can use fallback function, this function will run when the contract got Ether without transaction data (without call any functions), and when fallback function got called, `solved` value will turn to true
+![](fffsolp.png)
+Flag: `TCP1P{F4LLB4CK_Is_Lik3_b4ck_T0_B4s1C_StufF}`
