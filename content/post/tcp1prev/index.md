@@ -28,7 +28,7 @@ mobile file decompiled is too many duh, i let me just grep it to
 ![](introtoapkgrep.png)
 theres smth interesting on path `sources/com/example/andropwnrev/MainActivity.java` so i cat'ed it
 ![](introtoapkfile.png)
-```kotlin
+```java
 package com.example.andropwnrev;
 
 import android.os.Bundle;
