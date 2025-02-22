@@ -16,8 +16,8 @@ TCP1P is an Indonesian CTF team actively engaging in competitive cybersecurity e
 ![](ra.png)
 
 This event CTF has very long time (1 Year(its not even finish yet)), so i kinda confused to write the right year on the title (lol) (update: nah, ill just name it 365 then), so this CTF has so many categories, and my overall solved is on Forensic, Web Exploitation, Binary Exploitation, Reverse Engineering, and Blockchain.
-
-So maybe i'll post 1 category/day or smth, depends on my mood
+![](gojo.png)
+i solved so many challs, and this is the write-up about the chall i solved for
 ## Mobile Exploitation
 ### Intro to APK 
 ##### Author: replican
