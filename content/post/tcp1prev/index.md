@@ -18,6 +18,95 @@ TCP1P is an Indonesian CTF team actively engaging in competitive cybersecurity e
 This event CTF has very long time (1 Year(its not even finish yet)), so i kinda confused to write the right year on the title (lol) (update: nah, ill just name it 365 then), so this CTF has so many categories, and my overall solved is on Forensic, Web Exploitation, Binary Exploitation, Reverse Engineering, and Blockchain.
 
 So maybe i'll post 1 category/day or smth, depends on my mood
+## Mobile Exploitation
+### Intro to APK 
+##### Author: replican
+##### Desc: In the world of Android app development, Alex created a new app where hacking enthusiasts could test their skills with challenges. The signup process was Alex's way of ensuring that only the most skilled users could join. He worked hard to keep the app secure from unauthorized access. During this time, Alex encountered SkilledHackerLEET, a mysterious hacker known for testing digital defenses. Their back-and-forth challenge fascinated the app's users and showcased Alex's dedication to protecting his creation. In the midst of their rivalry, a puzzling message appeared: "To succeed, you must understand the app's flow and bypass its validation." This message added even more intrigue, making the app a place where only the best hackers could prove themselves.
+so i got an APK, and i just decompiled it with jadx
+![](introtoapkunzip.png)
+mobile file decompiled is too many duh, i let me just grep it to
+![](introtoapkgrep.png)
+theres smth interesting on path `sources/com/example/andropwnrev/MainActivity.java` so i cat'ed it
+![](introtoapkfile.png)
+```kotlin
+package com.example.andropwnrev;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+import com.example.andropwnrev.util.AesEncryption;
+import com.example.andropwnrev.util.ContantsKt;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.text.Charsets;
+import kotlin.text.StringsKt;
+
+@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002J\u0012\u0010\u0003\u001a\u00020\u00042\b\u0010\u0005\u001a\u0004\u0018\u00010\u0006H\u0015¨\u0006\u0007"}, d2 = {"Lcom/example/andropwnrev/MainActivity;", "Landroidx/appcompat/app/AppCompatActivity;", "()V", "onCreate", "", "savedInstanceState", "Landroid/os/Bundle;", "app_debug"}, k = 1, mv = {1, 9, 0}, xi = 48)
+/* compiled from: MainActivity.kt */
+public final class MainActivity extends AppCompatActivity {
+    /* access modifiers changed from: protected */
+    public void onCreate(Bundle savedInstanceState) {
+        byte[] bArr;
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        byte[] bytes = "1234111111111111".getBytes(Charsets.UTF_8);
+        Intrinsics.checkNotNullExpressionValue(bytes, "getBytes(...)");
+        IvParameterSpec iv = new IvParameterSpec(bytes);
+        String username = PreferenceManager.getDefaultSharedPreferences(getApplication()).getString(ContantsKt.PREF_USERNAME, "");
+        View findViewById = findViewById(R.id.text_main_activity);
+        Intrinsics.checkNotNullExpressionValue(findViewById, "findViewById(...)");
+        TextView textMainActivity = (TextView) findViewById;
+        String username2 = username + "111111111111";
+        AesEncryption aesEncryption = AesEncryption.INSTANCE;
+        if (username2 != null) {
+            bArr = username2.getBytes(Charsets.UTF_8);
+            Intrinsics.checkNotNullExpressionValue(bArr, "getBytes(...)");
+        } else {
+            bArr = null;
+        }
+        String flag = aesEncryption.decrypt("mhVTa4HLNQRuxNNF/+/JJYUNyPvE4JsPe7h9ERBsSgjGxjq6nVtggZMMNXYrjCN0", new SecretKeySpec(bArr, "AES"), iv);
+        if (flag != null) {
+            Log.i("Decrypted", flag);
+            textMainActivity.setText("thanks nerds/leet! , here is Your secret for getting the flag: " + username2 + " and iv: " + "1234111111111111" + ". Here is your flag: " + flag);
+        } else if (username2 == null || !StringsKt.contains$default((CharSequence) username2, (CharSequence) "1337", false, 2, (Object) null) || Intrinsics.areEqual((Object) username2, (Object) "1337")) {
+            Log.e("Decryption Error", "Failed to decrypt");
+            textMainActivity.setText("Failed to decrypt. Please check your leet account.");
+        } else {
+            textMainActivity.setText("Hi, you are close. Your username seems to contain a hint. Try using a simpler version of your username without any additional characters. like example 1234hello , and just using the 1234.");
+        }
+    }
+}
+```
+this file contains `AES encryption`, AES key from username saved in `SharedPreferences` with adding "111111111111", so when username = bara, so the AES key will be "bara111111111111". theres also ciphertext `mhVTa4HLNQRuxNNF/+/JJYUNyPvE4JsPe7h9ERBsSgjGxjq6nVtggZMMNXYrjCN0` and IV is use to convert byte array with UTF-8 encoding.
+
+We can decode the enc ciphertext, but i cannot access `SharedPreferences`, so ill just use username on hint `1337`, and this is the solver
+```py
+import base64
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad  
+
+ciphertext = base64.b64decode("mhVTa4HLNQRuxNNF/+/JJYUNyPvE4JsPe7h9ERBsSgjGxjq6nVtggZMMNXYrjCN0")
+iv = b"1234111111111111"
+usernames = ["1337", "admin", "test", "user", "guest", "root", "hacker1337"]
+
+for username in usernames:
+    key = (username + "111111111111").encode("utf-8")  
+    try:
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        decrypted = cipher.decrypt(ciphertext)
+        flag = unpad(decrypted, AES.block_size).decode("utf-8")  
+        print(f"Username: {username}, Flag: {flag}")
+        break  
+    except Exception as e:
+        pass  
+```
+![](introtoapkflag.png)
+Flag: `TCP1P{v3ry_34sy_1snt_f0r_w4rm4p_j0st_k0tl1n}`
 ## Binary Exploitation
 ### ret2win
 ##### Author: zran
