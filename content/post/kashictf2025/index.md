@@ -1,7 +1,7 @@
 ---
 title: "KashiCTF 2025"
 date: "2025-02-23"
-description: "Web Exploiation, Cryptography, Forensic"
+description: "All solved challenges"
 categories: [
     "Write-up"
 ]
@@ -92,7 +92,7 @@ Flag `KashiCTF{FSCK_mE_B1T_by_b1t_Byt3_by_byT3}`
 
 ### SNOWy Evening
 ##### Desc: A friend of mine , Aakash has gone missing and the only thing we found is this poem...Weirdly, he had a habit of keeping his name as the password.
-so i got a .txt file, but its show nothing interest when i cat'ed it, but then i got it
+so i got a .txt file, but its show nothing interest when i cat'ed it, but then i got this
 ![](SNOWy.png)
 its hint for stegsnow (is also in the title)
 ```bash
