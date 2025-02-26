@@ -20,7 +20,7 @@ Also this is my certificate,
 
 ![](certificate.png)
 
-I managed to solve 3 Crypto and .. Rev
+I managed to solve 3 Crypto and 3 Rev
 
 ![](gojo.png)
 
