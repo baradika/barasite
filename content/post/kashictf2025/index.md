@@ -27,6 +27,7 @@ and this is my write-up
 ##### Desc: Made my verty first API! However I have to still integrate it with a frontend so can't do much at this point lol.
 we got a web service, and this the looks like
 ![](fastapiweb.png)
+
 there is no front end/UI literally, pure just fetching from API.
 and of course there is no source code, and i decided to find the active directory
 #### Solver
@@ -48,6 +49,7 @@ and tried to add role variable, and fill it with admin
 then go back to '/flag', and execute
 
 ![](fastapiflag.png)
+
 Flag: `KashiCTF{m455_4551gnm3n7_ftw_iYTjzfu4Z}`
 
 ## Digital Forensic
