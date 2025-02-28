@@ -11,7 +11,7 @@ tags : [
 ]
 ---
 ## ACECTF 1.0
-ACE - Association of Computer Enthusiasts is the Technical society of School of Information Technology, Vivekananda Institute of Professional Studies which is affiliated GGSIP University, New Delhi. We are a group of talented and curious technology enthusiasts who are specialized in different fields of technology, namely programming, web development, digital imaging, and video editing.
+>ACE - Association of Computer Enthusiasts is the Technical society of School of Information Technology, Vivekananda Institute of Professional Studies which is affiliated GGSIP University, New Delhi. We are a group of talented and curious technology enthusiasts who are specialized in different fields of technology, namely programming, web development, digital imaging, and video editing.
 
 Hii there!! today i just finish a CTF event called `ACECTF 1.0`, the event finished at 14:30 WIB (delay cus the website down for a while). I'm playing with `TCP1P` and we got position on 26/661 teams!!
 
