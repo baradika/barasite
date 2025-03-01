@@ -18,7 +18,7 @@ languages:
         weight: 1
         params:
             sidebar:
-                subtitle: Don't get stuck in the past -- wear yourself out.
+                subtitle: python -c 'print("she"[1:3])'
 
 services:
     # Change it to your Disqus shortname before using
@@ -44,7 +44,7 @@ params:
 
     footer:
         since:
-        customText:
+        customText: Made with 💖 by Baradika
 
     dateFormat:
         published: Jan 02, 2006
@@ -52,7 +52,7 @@ params:
 
     sidebar:
         
-        subtitle: cybersec enthusiast
+        subtitle: python -c 'print("she"[1:3])'
         avatar:
             enabled: true
             local: true
@@ -177,7 +177,7 @@ params:
         toggle: false
 
         # Available values: auto, light, dark
-        default: dark
+        default: light
 
     imageProcessing:
         cover:
