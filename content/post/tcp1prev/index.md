@@ -9,6 +9,7 @@ tags : [
     "National",
     "Individual"
 ]
+image: "pantek.jpg"
 ---
 ## TCP1P
 TCP1P is an Indonesian CTF team actively engaging in competitive cybersecurity events on ctftime.

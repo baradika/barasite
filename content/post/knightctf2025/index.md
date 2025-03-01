@@ -9,6 +9,7 @@ tags : [
     "International",
     "LastSeenIn2026"
 ]
+image: "pantek.jpg"
 ---
 Uhmm, so yea today ill share yall `KnightCTF` write-up, i want to tell u smth that the ctf is alr end like a month ago (january) but i forgot to post the write up (mb)😿😿
 

@@ -9,6 +9,7 @@ tags : [
     "International",
     "TCP1P"
 ]
+image: "pantek.jpg"
 ---
 ## ACECTF 1.0
 >ACE - Association of Computer Enthusiasts is the Technical society of School of Information Technology, Vivekananda Institute of Professional Studies which is affiliated GGSIP University, New Delhi. We are a group of talented and curious technology enthusiasts who are specialized in different fields of technology, namely programming, web development, digital imaging, and video editing.

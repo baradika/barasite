@@ -5,6 +5,7 @@ description: "A stupid story about this blog launch"
 categories: [
     "Blog"
 ]
+image: "pantek.jpg"
 ---
 ## Recent things first…
 Like 3-4 hours ago, i RM -RF'ed my local hugo server :<
