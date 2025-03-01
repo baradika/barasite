@@ -23,7 +23,9 @@ and i managed to solve 4 Forensics, 2 Reverse Engineering, 2 Steganography, 1 Cr
 
 And this is my Walktrough.
 
+
 ![](gojo.jpg)
+
 
 ## Forensic
 ### Broken Secrets [275 Solves]

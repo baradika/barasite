@@ -14,7 +14,7 @@ hasCJKLanguage: false
 languages:
     en:
         languageName: English
-        title: Bar's Site
+        title: b4r's site
         weight: 1
         params:
             sidebar:
