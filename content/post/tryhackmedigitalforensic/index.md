@@ -2,6 +2,7 @@
 title: "TryHackMe: Digital Forensic"
 date: "2025-03-03"
 description: "Digital Forensic related in TryHackMe"
+draft: true
 categories: [
     "Write-up"
 ]
