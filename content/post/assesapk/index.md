@@ -44,7 +44,7 @@ ofc there is no smth interesting here, let see the source code
 
 ![](indexaaa.png)
 
-there is javascript function which fetch another endpoint to get the data about date (NAH ITS NOT, THEY FETCHING THE EXAM SCHEDULE AND THERE IS LINK THERE)
+there is javascript function which fetch another endpoint to get the data about date
 
 ![](helloadmin.png)
 
@@ -56,4 +56,4 @@ as you can see there is upload page, and this the page looks like
 
 there is a schedule and link, and there is upload thing there (its filtered, we can only upload excel file) but i dont know if it vuln of upload file vuln or nah, and im not take that risk....
 
-AND YEAH, thanks for reading, once again, i'm doing any abusive thing here, i just want to share how this **APK** looks secure (it is, but not for our team)
+AND YEAH, thanks for reading, once again, i'm not doing any abusive thing here, i just want to share how this **APK** looks secure (it is, but not for our team)
