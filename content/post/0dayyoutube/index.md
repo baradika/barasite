@@ -57,7 +57,7 @@ To exploit it:
 
 ## PoC
 ```
-https://youtube.com/redirect?q=https://bargas.requestcatcher.com
+http://playground.tcp1p.team:16787/?url=https://youtube.com/redirect?q=https://bargas.requestcatcher.com
 ```
 
 ![](poc.png)
