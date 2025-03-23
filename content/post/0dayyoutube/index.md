@@ -1,6 +1,6 @@
 ---
 title: "0day Youtube Open Redirect to SSRF"
-date: "2025-03-22"
+date: "2025-03-23"
 description: "0day Youtube Open Redirect Vulnerability Chall in TCP1P Special Ramadhan 2025 "
 categories: [
     "Write-up"
