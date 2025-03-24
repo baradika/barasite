@@ -18,6 +18,10 @@ links:
     website: https://medium.com/@baracarlo
     image: 'fixed_medium.png'
 
+  - title: LinkedIn
+    description: A platform to showcase your skills, experience, and achievements
+    website: https://www.linkedin.com/in/fase-rais-baradika-b72576324/
+    image: 'linkedin.jpg'
 menu:
     main:
         weight: -50
