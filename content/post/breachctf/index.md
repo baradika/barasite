@@ -380,7 +380,6 @@ To solve this challenge, we must **mine a valid block** by finding a `nonce` suc
 * Set a constant `merkle_root` (e.g., `"41414141"`) and `bits = "1d00ffff"`
 * Use current UNIX timestamp (`int(time.time())`)
 * Brute-force the `nonce` (32-bit integer) to meet the hash condition
-* Format each field to little-endian, matching the logic in `server.py`
 * Concatenate the fields to form the full block header
 * Apply **double SHA-256** to get the block hash
 * Check if the resulting hash satisfies the condition
