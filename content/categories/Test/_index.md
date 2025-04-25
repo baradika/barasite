@@ -1,7 +1,7 @@
 ---
-title: "Test"
+title: "Blog"
 description: "This is an example category"
-slug: "test"
+slug: "Blog"
 image: "hutomo-abrianto-l2jk-uxb1BY-unsplash.jpg"
 draft: true
 style:

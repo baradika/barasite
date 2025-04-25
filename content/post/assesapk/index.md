@@ -9,6 +9,7 @@ tags : [
     "Proof of Concept"
 ]
 image: yesssss.png
+draft: true
 ---
 Ahmmmm, so today, i will share my PoC (Proof of Concept) about Vuln in My beloved (no, this is just satire) exam APK.
 

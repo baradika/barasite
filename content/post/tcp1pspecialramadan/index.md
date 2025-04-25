@@ -2,6 +2,7 @@
 title: "My First Experience as a CTF Problem Setter"
 date: "2025-03-24"
 description: "A behind-the-scenes look at my first experience creating a challenge for a Capture The Flag event"
+draft: true
 categories: [
     "Blog"
 ]

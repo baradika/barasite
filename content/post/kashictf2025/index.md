@@ -10,6 +10,7 @@ tags : [
     "TCP1P"
 ]
 image: "pantek.jpg"
+draft: true
 ---
 ## KashiCTF 2025
 So today, i just played CTF event with `TCP1P`, and we play on Kashi CTF.
