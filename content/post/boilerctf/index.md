@@ -13,7 +13,7 @@ image: b01lersctf.png
 ---
 >b01lers CTF is the public competitive CTF hosted by the b01lers CTF team at Purdue University
 
-Haii, kali ini gw mau share write-up gw terkait challs di `b01lersCTF` kemarin yang gw ikutin bareng `TCP1P`, btw gw pake bahasa indo soalnya lagi ga ikut `Write-up Competition` wkwkwk, jadi pure mau share aja, dan juga gw cuma bisa ikut dari hari pertama (ctf nya 3 hari jir) dikarnakan suatu alasan.
+Haii, kali ini gw mau share write-up gw terkait challs di `b01lersCTF` kemarin yang gw ikutin bareng `TCP1P`, btw gw pake bahasa indo soalnya lagi ga ikut `Write-up Competition` wkwkwk, jadi pure mau share aja, dan juga gw cuma bisa ikut di hari pertama (ctf nya 3 hari jir) dikarnakan suatu alasan.
 
 Gw solve 5 challs disini, include sanity/welcome chall :v
 ![](meme.png)
@@ -23,7 +23,7 @@ gw solve 1 web, 1 misc (welcome), 1 crypto, dan 2 rev.
 ### When
 ![](webwhen.png)
 
-Diberikan sebauh web service dan file zip (untuk run it locally) dan ini isi zip nya
+Diberikan sebuah web service dan file zip (untuk run it locally) dan ini isi zip nya
 ![](whenzip.png)
 
 langsung gw buka, dan gw nemu ini di `app.ts`
