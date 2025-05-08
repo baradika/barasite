@@ -2,6 +2,7 @@
 title: "KnightCTF 2025"
 date: "2025-02-23"
 description: "Reverse Engineering and Cryptography Walktrough"
+draft: true
 categories: [
     "Write-up"
 ]
