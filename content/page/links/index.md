@@ -4,12 +4,12 @@ readingTime: false
 
 links:
   - title: GitHub
-    description: Check out my projects and contributions on GitHub. Open source vibes all the way!
+    description: Repos of my projects 
     website: https://github.com/baradika
     image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 
   - title: Capture The Flag (CTF)
-    description: Explore my journey in CTF challenges – hacking, problem-solving, and learning every day.
+    description: My CTFtime acc (i only active play with TCP1P :v)
     website: https://ctftime.org/
     image: 'fixed_ctftime.png'
 
@@ -19,9 +19,14 @@ links:
     image: 'fixed_medium.png'
 
   - title: LinkedIn
-    description: A platform to showcase your skills, experience, and achievements
+    description: My achievements? idk, im still grindin tho
     website: https://www.linkedin.com/in/fase-rais-baradika-b72576324/
     image: 'linkedin.jpg'
+
+  - title: Roblox
+    description: i've spent my daily not just for CTFs, also playin roblox :v
+    website: https://www.roblox.com/users/954515832/profile
+    image: 'roblox.png'
 menu:
     main:
         weight: -50

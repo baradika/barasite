@@ -11,7 +11,7 @@ tags : [
 ]
 image: htbctf.png
 ---
-Hii all!! today, i want to share my walktrough of my solved challs in `Cyber Apocalypse CTF 2025: Tales from Eldoria` event, the event is official CTF event competition organized by HackTheBox, they created many categories, `Reverse Engineering`, `Web Exploitation`, `Coding`, `Secure Coding`, `AI Exploitation`, `ML Exploitation`, `Blockchain`, `Binary Exploitation`, and `OSINT.
+Hii all!! today, i want to share my walktrough of my solved challs in `Cyber Apocalypse CTF 2025: Tales from Eldoria` event, the event is official CTF event competition organized by HackTheBox, they created many categories, `Reverse Engineering`, `Web Exploitation`, `Coding`, `Secure Coding`, `AI Exploitation`, `ML Exploitation`, `Blockchain`, `Binary Exploitation`, and `OSINT`.
 
 and i managed to solved all (5) `coding` challenges, 2 `Reverse Engineering`, and 5 `OSINT`
 
