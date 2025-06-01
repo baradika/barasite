@@ -220,8 +220,8 @@ e = 3
 N = 140435453730354645791411355194663476189925572822633969369789174462118371271596760636019139860253031574578527741964265651042308868891445943157297334529542262978581980510561588647737777257782808189452048059686839526183098369088517967034275028064545393619471943508597642789736561111876518966375338087811587061841
 C = 49352042282005059128581014505726171900605591297613623345867441621895112187636996726631442703018174634451487011943207283077132380966236199654225908444639768747819586037837300977718224328851698492514071424157020166404634418443047079321427635477610768472595631700807761956649004094995037741924081602353532946351
 ```
-### Summary
-#### 1. Understanding the Initial Encryption Process
+#### Summary
+##### 1. Understanding the Initial Encryption Process
 The `tung_tung_tung_sahur.py` performs a slightly modified RSA encryption.
 
 * The flag is converted into an integer `m`: `m = bytes_to_long(flag.encode())`
@@ -230,7 +230,7 @@ The `tung_tung_tung_sahur.py` performs a slightly modified RSA encryption.
 
 * The script then `asserts assert C_initial < N`. This is crucial because it indicates that `m^e` (before the standard RSA modulo `N` operation) is indeed smaller than `N`. The variable `C` in the script is initialized with this `C_initial`
 
-#### 2. Analyzing the "Tung!" Loop
+##### 2. Analyzing the "Tung!" Loop
 ```py
 assert C < N
 while (C < N):
@@ -244,7 +244,7 @@ $
 C aftertung​=(me)⋅2k
 $
 
-#### 3. Analyzing the "Sahur!" Loop
+##### 3. Analyzing the "Sahur!" Loop
 ```py
 # now C >= N
 while (C >= N):
@@ -262,7 +262,7 @@ $Caftertung = Cfinal + N$
 By combining the result from both loops, we get:\
 $(m^e)⋅2^k = Cfinal+s⋅N$
 
-### Solve
+##### Solve
 To find `m`, Let's isolate $m^e$:\
 $m^e=\frac{Cfinal​+s⋅N} {2^k}​$ \
 Since all values on the right-hand side are int, and $m^e$ must also be an int, this division is an int divison (floor division)
@@ -388,7 +388,7 @@ def main():
 if __name__ == "__main__":
     main()%           cat 
 ```
-### Summary
+#### Summary
 This challenge, `"UwuSignatures"` involved exploiting a flaw in a custom ElGamal-like digital signature scheme to forge a signature for a specific message and retrieve the flag.
 
 The server implements a signature scheme with the following characteristics:
@@ -410,7 +410,7 @@ The server implements a signature scheme with the following characteristics:
 
 * Verification Process: A signature `(r, s)` for a message `m`(with hash `h`) is valid if $g^h = y^r ⋅ r^s (mod p) $. This is a standard verification equation for ElGamal signatures
 
-### Solve
+#### Solve
 First, we need receive the public parameters `p`, `g`, `y` and leaked nonce `k`
 
 2. Obtain One Signature on a Chosen Message:
@@ -583,7 +583,7 @@ while True:
     if choice == '3':
         exit(0)
 ```
-### Summary 
+#### Summary 
 The `shaker.py` defines a `Shaker` class with the following key components and operations:
 * Initialization (`__init__`):
     * The shaker is initialized with the `flag` (64 bytes) as its initial `state`
@@ -612,7 +612,7 @@ The server provides two main options:
             * `xor` step: $(S_{beforeopen}⊕ x) ⊕ x = S_{beforeopen}$
             * `permute()` step: The state becomes $(S_{beforeopen})P_{new}$. So, after each "See inside" operation, we receive $S_{k-1}  ⊕x$ (where $S_{k-1}$ was the state before this `open` call), and the shaker's internal state for next round becomes $S_k = (S_{k-1})P_{new}$
 
-### Solve 
+#### Solve 
 The first, we must connect to the server and use option 2 (See inside) multiple times (e.g., `NUM_SAMPLES = 100`) to collect a set of outputs $O_1, O_2, ..., O_{100}$. Each $O_i$ is 64 bytes long. Then,
 
 * Recover the XOR Key `x`:
