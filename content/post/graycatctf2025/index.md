@@ -631,6 +631,113 @@ The first, we must connect to the server and use option 2 (See inside) multiple 
     * Compare it against the target MD5 hash \
     ("4839d730994228d53f64f0dca6488f8d") 
 
+`Solver.py`:
+```py
+import hashlib
+from pwn import remote, log
+import string
+
+HOST = "challs.nusgreyhats.org"
+PORT = 33302
+NUM_SAMPLES = 100
+FLAG_LEN = 64
+TARGET_MD5 = "4839d730994228d53f64f0dca6488f8d"
+PLAUSIBLE_FLAG_CHARS = set(map(ord, string.ascii_letters + string.digits + "{}_-!@#$%^&*()."))
+
+def get_one_output(r):
+    """Sends command to get one encrypted output and returns it as bytes."""
+    r.sendlineafter(b"> ", b"2")
+    r.recvuntil(b"Result: ")
+    hex_output = r.recvline().strip().decode()
+    return bytes.fromhex(hex_output)
+
+def solve():
+    """Connects to the server, recovers the XOR key and flag, then verifies MD5."""
+    r = remote(HOST, PORT)
+    log.info(f"Connected to {HOST}:{PORT}")
+
+    observed_outputs = []
+    log.info(f"Collecting {NUM_SAMPLES} samples...")
+    for i in range(NUM_SAMPLES):
+        try:
+            output = get_one_output(r)
+            if len(output) != FLAG_LEN:
+                log.error(f"Output {i+1} has incorrect length: {len(output)}. Stopping.")
+                r.close()
+                return
+            observed_outputs.append(output)
+            if (i + 1) % 10 == 0 or (i + 1) == NUM_SAMPLES:
+                log.info(f"Collected sample {i+1}/{NUM_SAMPLES}")
+        except EOFError:
+            log.error("Connection lost while collecting samples.")
+            r.close()
+            return
+        except Exception as e:
+            log.error(f"Error collecting sample {i+1}: {e}")
+            r.close()
+            return
+
+        log.error("No samples were collected.")
+        r.close()
+        return
+
+    recovered_X = bytearray(FLAG_LEN)
+    any_ambiguity_in_key = False
+    log.info("Recovering XOR key (self.x)...")
+
+    for j in range(FLAG_LEN):
+        possible_key_bytes_for_pos_j = [
+            guess_x_byte for guess_x_byte in range(256)
+            if all((sample[j] ^ guess_x_byte) in PLAUSIBLE_FLAG_CHARS for sample in observed_outputs)
+        ]
+
+        if not possible_key_bytes_for_pos_j:
+            log.error(f"No plausible key byte found for position {j}. Consider revising PLAUSIBLE_FLAG_CHARS.")
+            r.close()
+            return
+
+        if len(possible_key_bytes_for_pos_j) > 1:
+            log.warning(f"Position {j} has {len(possible_key_bytes_for_pos_j)} possible key bytes: {possible_key_bytes_for_pos_j}. Using the first.")
+            any_ambiguity_in_key = True
+        
+        recovered_X[j] = possible_key_bytes_for_pos_j[0]
+
+        if (j + 1) % 8 == 0 or j == FLAG_LEN - 1:
+             log.info(f"Recovered key byte {j+1}/{FLAG_LEN} (chosen: {recovered_X[j]}, candidates: {len(possible_key_bytes_for_pos_j)})")
+    
+    log.success(f"XOR key (self.x) recovered: {recovered_X.hex()}")
+
+    recovered_flag = bytes(o_byte ^ x_byte for o_byte, x_byte in zip(observed_outputs[0], recovered_X))
+
+    log.success(f"Recovered flag (bytes): {recovered_flag!r}")
+    
+    flag_str_decoded = None
+    try:
+        flag_str_decoded = recovered_flag.decode('utf-8')
+        log.success(f"Recovered flag (UTF-8 string): {flag_str_decoded}")
+    except UnicodeDecodeError:
+        try:
+            flag_str_decoded = recovered_flag.decode('latin-1')
+            log.warning(f"Flag not UTF-8, decoded as Latin-1: {flag_str_decoded}")
+        except UnicodeDecodeError:
+            log.error(f"Flag is not valid UTF-8 or Latin-1. Raw hex: {recovered_flag.hex()}")
+
+    md5_hash = hashlib.md5(recovered_flag).hexdigest()
+    log.info(f"MD5 of recovered flag: {md5_hash}")
+
+    if md5_hash == TARGET_MD5:
+        log.success("MD5 MATCHES! Flag is correct.")
+    else:
+        log.error(f"MD5 MISMATCH. Target: {TARGET_MD5}, Got: {md5_hash}")
+        if any_ambiguity_in_key:
+            log.info("Ambiguity was encountered during key recovery. This might be the cause if the flag is incorrect. Review warnings for key byte choices.")
+            
+    r.close()
+
+if __name__ == "__main__":
+    solve()
+```
+
 Flag: `grey{kinda_long_flag_but_whatever_65k2n427c61ww064ac3vhzigae2qg}`
 
 
