@@ -741,4 +741,506 @@ if __name__ == "__main__":
 Flag: `grey{kinda_long_flag_but_whatever_65k2n427c61ww064ac3vhzigae2qg}`
 
 
-----LANJUT BESOK CIK----
+## Forensic
+### Connection Issues
+
+![](connectionissues.png)
+
+So we got the zip files, and i got pcap file after extracted it. \
+I started with check the strings, and i figure out some base64
+
+![](stringsforen.png)
+
+then i tried to decode it, and this is the result
+
+![](base64.png)
+
+just fix it, and u will get the flag
+
+Flag: `grey{d1d_1_jus7_ge7_p01son3d}`
+
+## Reverse Engineering
+### reversing101
+
+![](reversing101.png)
+
+So we get zip file and netcat server address, when u get into the netcat, it will ask u some question and we must ask it all to get the flag
+
+![](question1.png)
+
+To answer the first question, we can just check it with gdb
+
+![](infofunctions.png)
+
+![](question2.png)
+
+To answer this, we just need to decompile it,
+```c
+
+long a(char *param_1)
+
+{
+  long lVar1;
+  char *local_10;
+  
+  local_10 = param_1;
+  if (*param_1 == '\0') {
+    lVar1 = 0;
+  }
+  else {
+    do {
+      local_10 = local_10 + 1;
+    } while (*local_10 != '\0');
+    lVar1 = (long)local_10 - (long)param_1;
+  }
+  return lVar1;
+}
+```
+
+the `a` function is basically same as `strlen` from libc,
+
+![](question3.png)
+
+To answer this, we can checked by decompile `main` function
+```C
+undefined8 main(void)
+
+{
+  int iVar1;
+  size_t sVar2;
+  long in_FS_OFFSET;
+  char local_118 [264];
+  long local_10;
+  
+  local_10 = *(long *)(in_FS_OFFSET + 0x28);
+  local_118[0] = '\0';
+  local_118[1] = '\0';
+  local_118[2] = '\0';
+  local_118[3] = '\0';
+  local_118[4] = '\0';
+  local_118[5] = '\0';
+  local_118[6] = '\0';
+  local_118[7] = '\0';
+  local_118[8] = '\0';
+  local_118[9] = '\0';
+  local_118[10] = '\0';
+  local_118[0xb] = '\0';
+  local_118[0xc] = '\0';
+  local_118[0xd] = '\0';
+  local_118[0xe] = '\0';
+  local_118[0xf] = '\0';
+  local_118[0x10] = '\0';
+  local_118[0x11] = '\0';
+  local_118[0x12] = '\0';
+  local_118[0x13] = '\0';
+  local_118[0x14] = '\0';
+  local_118[0x15] = '\0';
+  local_118[0x16] = '\0';
+  local_118[0x17] = '\0';
+  local_118[0x18] = '\0';
+  local_118[0x19] = '\0';
+  local_118[0x1a] = '\0';
+  local_118[0x1b] = '\0';
+  local_118[0x1c] = '\0';
+  local_118[0x1d] = '\0';
+  local_118[0x1e] = '\0';
+  local_118[0x1f] = '\0';
+  local_118[0x20] = '\0';
+  local_118[0x21] = '\0';
+  local_118[0x22] = '\0';
+  local_118[0x23] = '\0';
+  local_118[0x24] = '\0';
+  local_118[0x25] = '\0';
+  local_118[0x26] = '\0';
+  local_118[0x27] = '\0';
+  local_118[0x28] = '\0';
+  local_118[0x29] = '\0';
+  local_118[0x2a] = '\0';
+  local_118[0x2b] = '\0';
+  local_118[0x2c] = '\0';
+  local_118[0x2d] = '\0';
+  local_118[0x2e] = '\0';
+  local_118[0x2f] = '\0';
+  local_118[0x30] = '\0';
+  local_118[0x31] = '\0';
+  local_118[0x32] = '\0';
+  local_118[0x33] = '\0';
+  local_118[0x34] = '\0';
+  local_118[0x35] = '\0';
+  local_118[0x36] = '\0';
+  local_118[0x37] = '\0';
+  local_118[0x38] = '\0';
+  local_118[0x39] = '\0';
+  local_118[0x3a] = '\0';
+  local_118[0x3b] = '\0';
+  local_118[0x3c] = '\0';
+  local_118[0x3d] = '\0';
+  local_118[0x3e] = '\0';
+  local_118[0x3f] = '\0';
+  local_118[0x40] = '\0';
+  local_118[0x41] = '\0';
+  local_118[0x42] = '\0';
+  local_118[0x43] = '\0';
+  local_118[0x44] = '\0';
+  local_118[0x45] = '\0';
+  local_118[0x46] = '\0';
+  local_118[0x47] = '\0';
+  local_118[0x48] = '\0';
+  local_118[0x49] = '\0';
+  local_118[0x4a] = '\0';
+  local_118[0x4b] = '\0';
+  local_118[0x4c] = '\0';
+  local_118[0x4d] = '\0';
+  local_118[0x4e] = '\0';
+  local_118[0x4f] = '\0';
+  local_118[0x50] = '\0';
+  local_118[0x51] = '\0';
+  local_118[0x52] = '\0';
+  local_118[0x53] = '\0';
+  local_118[0x54] = '\0';
+  local_118[0x55] = '\0';
+  local_118[0x56] = '\0';
+  local_118[0x57] = '\0';
+  local_118[0x58] = '\0';
+  local_118[0x59] = '\0';
+  local_118[0x5a] = '\0';
+  local_118[0x5b] = '\0';
+  local_118[0x5c] = '\0';
+  local_118[0x5d] = '\0';
+  local_118[0x5e] = '\0';
+  local_118[0x5f] = '\0';
+  local_118[0x60] = '\0';
+  local_118[0x61] = '\0';
+  local_118[0x62] = '\0';
+  local_118[99] = '\0';
+  local_118[100] = '\0';
+  local_118[0x65] = '\0';
+  local_118[0x66] = '\0';
+  local_118[0x67] = '\0';
+  local_118[0x68] = '\0';
+  local_118[0x69] = '\0';
+  local_118[0x6a] = '\0';
+  local_118[0x6b] = '\0';
+  local_118[0x6c] = '\0';
+  local_118[0x6d] = '\0';
+  local_118[0x6e] = '\0';
+  local_118[0x6f] = '\0';
+  local_118[0x70] = '\0';
+  local_118[0x71] = '\0';
+  local_118[0x72] = '\0';
+  local_118[0x73] = '\0';
+  local_118[0x74] = '\0';
+  local_118[0x75] = '\0';
+  local_118[0x76] = '\0';
+  local_118[0x77] = '\0';
+  local_118[0x78] = '\0';
+  local_118[0x79] = '\0';
+  local_118[0x7a] = '\0';
+  local_118[0x7b] = '\0';
+  local_118[0x7c] = '\0';
+  local_118[0x7d] = '\0';
+  local_118[0x7e] = '\0';
+  local_118[0x7f] = '\0';
+  local_118[0x80] = '\0';
+  local_118[0x81] = '\0';
+  local_118[0x82] = '\0';
+  local_118[0x83] = '\0';
+  local_118[0x84] = '\0';
+  local_118[0x85] = '\0';
+  local_118[0x86] = '\0';
+  local_118[0x87] = '\0';
+  local_118[0x88] = '\0';
+  local_118[0x89] = '\0';
+  local_118[0x8a] = '\0';
+  local_118[0x8b] = '\0';
+  local_118[0x8c] = '\0';
+  local_118[0x8d] = '\0';
+  local_118[0x8e] = '\0';
+  local_118[0x8f] = '\0';
+  local_118[0x90] = '\0';
+  local_118[0x91] = '\0';
+  local_118[0x92] = '\0';
+  local_118[0x93] = '\0';
+  local_118[0x94] = '\0';
+  local_118[0x95] = '\0';
+  local_118[0x96] = '\0';
+  local_118[0x97] = '\0';
+  local_118[0x98] = '\0';
+  local_118[0x99] = '\0';
+  local_118[0x9a] = '\0';
+  local_118[0x9b] = '\0';
+  local_118[0x9c] = '\0';
+  local_118[0x9d] = '\0';
+  local_118[0x9e] = '\0';
+  local_118[0x9f] = '\0';
+  local_118[0xa0] = '\0';
+  local_118[0xa1] = '\0';
+  local_118[0xa2] = '\0';
+  local_118[0xa3] = '\0';
+  local_118[0xa4] = '\0';
+  local_118[0xa5] = '\0';
+  local_118[0xa6] = '\0';
+  local_118[0xa7] = '\0';
+  local_118[0xa8] = '\0';
+  local_118[0xa9] = '\0';
+  local_118[0xaa] = '\0';
+  local_118[0xab] = '\0';
+  local_118[0xac] = '\0';
+  local_118[0xad] = '\0';
+  local_118[0xae] = '\0';
+  local_118[0xaf] = '\0';
+  local_118[0xb0] = '\0';
+  local_118[0xb1] = '\0';
+  local_118[0xb2] = '\0';
+  local_118[0xb3] = '\0';
+  local_118[0xb4] = '\0';
+  local_118[0xb5] = '\0';
+  local_118[0xb6] = '\0';
+  local_118[0xb7] = '\0';
+  local_118[0xb8] = '\0';
+  local_118[0xb9] = '\0';
+  local_118[0xba] = '\0';
+  local_118[0xbb] = '\0';
+  local_118[0xbc] = '\0';
+  local_118[0xbd] = '\0';
+  local_118[0xbe] = '\0';
+  local_118[0xbf] = '\0';
+  local_118[0xc0] = '\0';
+  local_118[0xc1] = '\0';
+  local_118[0xc2] = '\0';
+  local_118[0xc3] = '\0';
+  local_118[0xc4] = '\0';
+  local_118[0xc5] = '\0';
+  local_118[0xc6] = '\0';
+  local_118[199] = '\0';
+  local_118[200] = '\0';
+  local_118[0xc9] = '\0';
+  local_118[0xca] = '\0';
+  local_118[0xcb] = '\0';
+  local_118[0xcc] = '\0';
+  local_118[0xcd] = '\0';
+  local_118[0xce] = '\0';
+  local_118[0xcf] = '\0';
+  local_118[0xd0] = '\0';
+  local_118[0xd1] = '\0';
+  local_118[0xd2] = '\0';
+  local_118[0xd3] = '\0';
+  local_118[0xd4] = '\0';
+  local_118[0xd5] = '\0';
+  local_118[0xd6] = '\0';
+  local_118[0xd7] = '\0';
+  local_118[0xd8] = '\0';
+  local_118[0xd9] = '\0';
+  local_118[0xda] = '\0';
+  local_118[0xdb] = '\0';
+  local_118[0xdc] = '\0';
+  local_118[0xdd] = '\0';
+  local_118[0xde] = '\0';
+  local_118[0xdf] = '\0';
+  local_118[0xe0] = '\0';
+  local_118[0xe1] = '\0';
+  local_118[0xe2] = '\0';
+  local_118[0xe3] = '\0';
+  local_118[0xe4] = '\0';
+  local_118[0xe5] = '\0';
+  local_118[0xe6] = '\0';
+  local_118[0xe7] = '\0';
+  local_118[0xe8] = '\0';
+  local_118[0xe9] = '\0';
+  local_118[0xea] = '\0';
+  local_118[0xeb] = '\0';
+  local_118[0xec] = '\0';
+  local_118[0xed] = '\0';
+  local_118[0xee] = '\0';
+  local_118[0xef] = '\0';
+  local_118[0xf0] = '\0';
+  local_118[0xf1] = '\0';
+  local_118[0xf2] = '\0';
+  local_118[0xf3] = '\0';
+  local_118[0xf4] = '\0';
+  local_118[0xf5] = '\0';
+  local_118[0xf6] = '\0';
+  local_118[0xf7] = '\0';
+  local_118[0xf8] = '\0';
+  local_118[0xf9] = '\0';
+  local_118[0xfa] = '\0';
+  local_118[0xfb] = '\0';
+  local_118[0xfc] = '\0';
+  local_118[0xfd] = '\0';
+  local_118[0xfe] = '\0';
+  local_118[0xff] = '\0';
+  printf("please input the correct password: ");
+  FUN_004010e0("%255s",local_118);
+  sVar2 = strcspn(local_118,"\n");
+  local_118[sVar2] = '\0';
+  iVar1 = a(local_118);
+  if (iVar1 == 0xf) {
+    b();
+    c(local_118,(void *)0xf);
+    iVar1 = memcmp(local_118,enc,0xf);
+    if (iVar1 == 0) {
+      puts("correct password! answer the quiz to get the flag.");
+      goto LAB_00402fde;
+    }
+  }
+  puts("incorrect password. try again.");
+LAB_00402fde:
+  if (local_10 != *(long *)(in_FS_OFFSET + 0x28)) {
+                    /* WARNING: Subroutine does not return */
+    __stack_chk_fail();
+  }
+  return 0;
+}
+```
+
+as we can see,
+```C
+  printf("please input the correct password: ");
+  FUN_004010e0("%255s",local_118);
+  sVar2 = strcspn(local_118,"\n");
+  local_118[sVar2] = '\0';
+  iVar1 = a(local_118);
+  if (iVar1 == 0xf) {
+    b();
+    c(local_118,(void *)0xf);
+    iVar1 = memcmp(local_118,enc,0xf);
+    if (iVar1 == 0) {
+      puts("correct password! answer the quiz to get the flag.");
+      goto LAB_00402fde;
+    }
+  }
+```
+the input limit is 255 chars, but validated length for correctness is 15 chars, so the answer is `15`
+
+![](question4.png)
+
+to solve this, we can do dynamic analysis with gdb (or other tools)\
+breakpoint at `main` and dissas `main`, revealed that function `b` is called only if a proceding length check passes, 
+
+![](disassmain.png)
+
+to ensure function `b` gets called regardless of the actual input length, we set a breakpoint just after call to function `a` (at `0x402f6c`, which is the `cmp $0xf,%eax`)
+
+![](question42.png)
+
+When this breakpoint was hit (after providing "a" as input, making eax=1), we manually changed the value of `eax` to `0xf` using the GDB command: `set $eax = 0xf`. This tricks the program into thinking the input length was `15`
+
+![](question43.png)
+
+`0xc1de1494171d9e2f` convert it to decimal = `13969625720425389615`
+
+![](question5.png)
+
+to answer the question, we need to decompile the `c` function
+```c
+int c(void *param_1,void *param_2)
+
+{
+  byte bVar1;
+  undefined8 in_RDX;
+  long in_FS_OFFSET;
+  int local_130;
+  int local_12c;
+  void *local_128;
+  byte local_120 [4];
+  undefined1 local_11c;
+  undefined1 local_11b;
+  undefined1 local_11a;
+  undefined1 local_119;
+  byte abStack_118 [264];
+  long local_10;
+  
+  local_10 = *(long *)(in_FS_OFFSET + 0x28);
+  local_12c = 0;
+  local_120[0] = (byte)in_RDX;
+  local_120[1] = (char)((ulong)in_RDX >> 8);
+  local_120[2] = (char)((ulong)in_RDX >> 0x10);
+  local_120[3] = (char)((ulong)in_RDX >> 0x18);
+  local_11c = (char)((ulong)in_RDX >> 0x20);
+  local_11b = (char)((ulong)in_RDX >> 0x28);
+  local_11a = (char)((ulong)in_RDX >> 0x30);
+  local_119 = (char)((ulong)in_RDX >> 0x38);
+  for (local_130 = 0; local_130 < 0x100; local_130 = local_130 + 1) {
+    abStack_118[local_130] = (byte)local_130;
+  }
+  for (local_130 = 0; local_130 < 0x100; local_130 = local_130 + 1) {
+    local_12c = (int)((uint)local_120[local_130 % 8] + (uint)abStack_118[local_130] + local_12c)  %
+                0x100;
+    bVar1 = abStack_118[local_130];
+    abStack_118[local_130] = abStack_118[local_12c];
+    abStack_118[local_12c] = bVar1;
+  }
+  local_130 = 0;
+  local_12c = 0;
+  for (local_128 = (void *)0x0; local_128 < param_2; local_128 = (void *)((long)local_128 + 1)) {
+    local_130 = (local_130 + 1) % 0x100;
+    local_12c = (int)(local_12c + (uint)abStack_118[local_130]) % 0x100;
+    bVar1 = abStack_118[local_130];
+    abStack_118[local_130] = abStack_118[local_12c];
+    abStack_118[local_12c] = bVar1;
+    *(byte *)((long)local_128 + (long)param_1) =
+         *(byte *)((long)local_128 + (long)param_1) ^
+         abStack_118[(int)(uint)(byte)(abStack_118[local_12c] + abStack_118[local_130])];
+  }
+  if (local_10 != *(long *)(in_FS_OFFSET + 0x28)) {
+                    /* WARNING: Subroutine does not return */
+    __stack_chk_fail();
+  }
+  return 0;
+}
+```
+as the hints says, so we just gonna ask AI tho
+
+![](answer5.png)
+
+so the answer is `RC4`
+
+![](question6.png)
+
+this is kinda easy, cus we alr get the key by doin this
+
+![](question43.png)
+
+and we know the encryption algorithm, so all we need it now is just dump the `enc`,
+
+![](enc.png)
+
+and this is the solver:
+```py
+def rc4(key: bytes, data: bytes) -> bytes:
+    S = list(range(256))
+    j = 0
+    for i in range(256):
+        j = (j + S[i] + key[i % len(key)]) & 0xFF
+        S[i], S[j] = S[j], S[i]
+
+    out = bytearray(len(data))
+    i = 0
+    j = 0
+    for idx in range(len(data)):
+        i = (i + 1) & 0xFF
+        j = (j + S[i]) & 0xFF
+        S[i], S[j] = S[j], S[i]
+        K = S[(S[i] + S[j]) & 0xFF]
+        out[idx] = data[idx] ^ K
+    return bytes(out)
+
+
+if __name__ == "__main__":
+    key_from_b_return_value = 0xc1de1494171d9e2f 
+    key = key_from_b_return_value.to_bytes(8, byteorder='little') 
+    enc_bytes = bytes([
+        0xD1, 0x58, 0x15, 0x8A, 0xEE,
+        0xB5, 0xBB, 0x52, 0x0C, 0x6B,
+        0xA4, 0xAB, 0x6D, 0x7D, 0xB7
+    ])
+
+    password = rc4(key, enc_bytes)
+    print(password)
+```
+output:
+`b'honk-mimimimimi'`
+
+![](revflag.png)
+
+Flag: `grey{solv3d_m1_f1r5t_r3v_ch4lleng3_heh3}`
