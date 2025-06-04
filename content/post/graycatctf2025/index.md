@@ -14,6 +14,15 @@ image: logo.png
 
 On Saturday, May 31, 2025, I participated in GreyCTF 2025 with TCP1P, and I managed to solve 3 Crypto, 1 Forensic, and 1 Reverse Engineering challenges.
 
+## Miscellaneous
+### Sanity Check
+To solve this challange, u can access the this link `https://ctfd.nusgreyhats.org/`\
+
+register if u dont have account at `https://ctfd.nusgreyhats.org/register`, then if u done, acess `https://ctfd.nusgreyhats.org/login`, after that u will get direct to `https://ctfd.nusgreyhats.org/challenges` u will see chall named `Sanity Check`, click it, and there is flag in the description
+
+![](sanitycheck.png)
+
+Flag: `grey{w3lc0m3_2_gr3yctf_2025_fabb13becc1}`
 ## Cryptography
 ### Tung Tung Tung Sahur
 
