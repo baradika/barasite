@@ -1,6 +1,6 @@
 ---
 title: "TJCTF 2025"
-date: "2025-06-08"
+date: "2025-06-13"
 description: "ctf event with the most challenges i solved :v"
 categories: [
     "Write-up"
