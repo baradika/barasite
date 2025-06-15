@@ -8,8 +8,8 @@ links:
     website: https://github.com/baradika
     image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 
-  - title: Capture The Flag (CTF)
-    description: My CTFtime acc (i only active play with TCP1P :v)
+  - title: CTFtime
+    description: My CTFtime acc 
     website: https://ctftime.org/user/216423
     image: 'fixed_ctftime.png'
 
