@@ -10,7 +10,7 @@ links:
 
   - title: Capture The Flag (CTF)
     description: My CTFtime acc (i only active play with TCP1P :v)
-    website: https://ctftime.org/
+    website: https://ctftime.org/user/216423
     image: 'fixed_ctftime.png'
 
   - title: Medium
@@ -20,7 +20,7 @@ links:
 
   - title: LinkedIn
     description: My achievements? idk, im still grindin tho
-    website: https://www.linkedin.com/in/fase-rais-baradika-b72576324/
+    website: https://www.linkedin.com/in/fase-rais-baradika
     image: 'linkedin.jpg'
 
   - title: Roblox
