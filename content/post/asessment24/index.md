@@ -10,7 +10,7 @@ tags : [
 ]
 image: database.png
 ---
-##### tes
+#####
 > Kerentanan ini sudah dilaporkan dan sudah difix
 
 Singkat cerita, saya diberi tau oleh seseorang terkait sebuah website khusus jurusan `RPL`, di website ini diberikan fitur seperti Register, Login, File Upload dll (Kelas saya tidak diberitahu karna memang kelas saya tidak diajar oleh Pak `Rian`, dan sepertinya web ini khusus untuk mengumpulkan project-project yang diajar oleh Pak `Rian`)
