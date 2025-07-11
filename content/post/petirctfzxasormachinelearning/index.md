@@ -9,6 +9,7 @@ tags : [
     "National"
 ]
 image: petir.png
+draft: true
 ---
 
 >Hi! kali ini gw mau share _write-up_ chall di event CTF `PETIR - REGEN 2025`, `PETIR - REGEN 2025` adalah event CTF yang dibuat oleh komunitas/jurusan Cybersecurity di _Universitas Bina Nusantara_, dan gw mau _sharing_ write-up terkait chall category `Reverse Engineering`, tapi ga semua, cuma beberapa chall yang sekira nya _menarik_ aja buat gw, and here it is

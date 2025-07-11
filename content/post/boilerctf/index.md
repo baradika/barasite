@@ -10,6 +10,7 @@ tags : [
     "TCP1P"
 ]
 image: b01lersctf.png
+draft: true
 ---
 >b01lers CTF is the public competitive CTF hosted by the b01lers CTF team at Purdue University
 

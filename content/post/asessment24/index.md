@@ -94,4 +94,3 @@ dan disini saya punya hak akses tinggi, bisa create, read, update, dan `delete`.
 
 Dan segitu saja Proof of Concept dari Vulnerability yang telah saya temukan, semoga bisa membantu (btw saya gak ngelakuin hal illegal selain update role saya sendiri jadi `admin` :v)
 
-
